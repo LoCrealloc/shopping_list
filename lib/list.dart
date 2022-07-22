@@ -22,7 +22,7 @@ class _ShoppingListState extends State<ShoppingList> {
   Future<void> _askForTitle(BuildContext context) async {
     return showDialog(context: context, builder: (context) {
       return AlertDialog(
-        title: const Text("Eingabe"),
+        title: const Text("Neuer Eintrag"),
         content: TextField(
           onChanged: (value) {
             setState(() {
@@ -30,8 +30,6 @@ class _ShoppingListState extends State<ShoppingList> {
             });
           },
           decoration: const InputDecoration(hintText: "Titel"),
-
-
         ),
         actions: <Widget>[
           TextButton(
@@ -56,7 +54,6 @@ class _ShoppingListState extends State<ShoppingList> {
   }
 
   void _handleAddEntry() async {
-
     await _askForTitle(context);
 
     if (_buildSuccess && _buildTitle.isNotEmpty) {
