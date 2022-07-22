@@ -22,7 +22,7 @@ class _ShoppingListState extends State<ShoppingList> {
   Future<void> _askForTitle(BuildContext context) async {
     return showDialog(context: context, builder: (context) {
       return AlertDialog(
-        title: const Text("Eingabe"),
+        title: const Text("Neuer Eintrag"),
         content: TextField(
           onChanged: (value) {
             setState(() {
@@ -30,8 +30,6 @@ class _ShoppingListState extends State<ShoppingList> {
             });
           },
           decoration: const InputDecoration(hintText: "Titel"),
-
-
         ),
         actions: <Widget>[
           TextButton(
@@ -56,7 +54,6 @@ class _ShoppingListState extends State<ShoppingList> {
   }
 
   void _handleAddEntry() async {
-
     await _askForTitle(context);
 
     if (_buildSuccess && _buildTitle.isNotEmpty) {
@@ -74,7 +71,6 @@ class _ShoppingListState extends State<ShoppingList> {
     _buildTitle = "";
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,11 +82,15 @@ class _ShoppingListState extends State<ShoppingList> {
           children: _entries,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _handleAddEntry,
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.add),
+      floatingActionButton: SizedBox(
+        width: 125,
+        height: 125,
+        child: FloatingActionButton(
+          onPressed: _handleAddEntry,
+          backgroundColor: Colors.blue,
+          child: const Icon(Icons.add, size: 75,),
       ),
+      )
     );
   }
 }
