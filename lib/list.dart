@@ -6,7 +6,7 @@ class ShoppingList extends StatefulWidget {
 
   static List<Entry> loadEntries() {
     // TODO actually load entries
-    return List<Entry>.generate(20, (int index) => Entry(title: index.toString(), done: index % 3 == 0));
+    return [];
   }
 
   @override
