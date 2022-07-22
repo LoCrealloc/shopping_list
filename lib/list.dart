@@ -85,7 +85,7 @@ class _ShoppingListState extends State<ShoppingList> {
           children: _entries,
         ),
       ),
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
         width: 125,
         height: 125,
         child: FloatingActionButton(
