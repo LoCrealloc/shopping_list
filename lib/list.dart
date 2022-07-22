@@ -55,8 +55,6 @@ class _ShoppingListState extends State<ShoppingList> {
     });
   }
 
-
-
   void _handleAddEntry() async {
 
     await _askForTitle(context);

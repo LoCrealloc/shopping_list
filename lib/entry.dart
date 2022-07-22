@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
 class Entry extends StatefulWidget {
-  Entry({ Key? key, required this.title, this.done = false}) : super(key: key);
+  Entry(
+    {
+      Key? key,
+      required this.title,
+      this.done = false,
+    }) : super(key: key);
 
   final String title;
-  final bool done;
+  bool done;
 
   @override
   State<Entry> createState() => _EntryState();
@@ -25,7 +30,32 @@ class _EntryState extends State<Entry> {
         ),
         color: !widget.done ? Colors.white : Colors.grey,
       ),
-      child: Text(widget.title, style: const TextStyle(fontSize: 22),),
+      child: Row(
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.only(right: 20),
+            child: Material(
+              color: Colors.transparent,
+              child: Ink(
+                decoration: const ShapeDecoration(
+                  color: Colors.blue,
+                  shape: CircleBorder(),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.check),
+                  color: Colors.white,
+                  onPressed: () {
+                    setState(() {
+                      widget.done = !widget.done;
+                      });
+                    },
+              )
+            )
+          )),
+          Text(widget.title, style: const TextStyle(fontSize: 22))
+        ]
+
+    )
     );
   }
 }
