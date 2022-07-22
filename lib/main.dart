@@ -3,7 +3,7 @@ import 'package:shopping/list.dart';
 
 
 void main() {
-  runApp(const App());
+  runApp(App());
 }
 
 class App extends StatelessWidget {
@@ -16,14 +16,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Einkaufsliste")
-        ),
-        body: Center(
-          child: ShoppingList(),
-        ),
-      ),
+      home: const ShoppingList()
     );
   }
 }

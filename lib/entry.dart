@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Entry extends StatefulWidget {
-  const Entry({ Key? key, required this.title , this.done = false}) : super(key: key);
+  Entry({ Key? key, required this.title, this.done = false}) : super(key: key);
 
   final String title;
   final bool done;
@@ -11,6 +11,7 @@ class Entry extends StatefulWidget {
 }
 
 class _EntryState extends State<Entry> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
