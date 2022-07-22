@@ -33,28 +33,23 @@ class _EntryState extends State<Entry> {
       child: Row(
         children: <Widget>[
           Container(
+            decoration: BoxDecoration(
+              color: !widget.done ? Colors.blue : Colors.transparent,
+              borderRadius: BorderRadius.circular(360),
+            ),
             margin: const EdgeInsets.only(right: 20),
-            child: Material(
-              color: Colors.transparent,
-              child: Ink(
-                decoration: const ShapeDecoration(
-                  color: Colors.blue,
-                  shape: CircleBorder(),
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.check),
-                  color: Colors.white,
-                  onPressed: () {
-                    setState(() {
-                      widget.done = !widget.done;
-                      });
-                    },
+              child: IconButton(
+                icon: Icon(!widget.done ? Icons.check : Icons.restore),
+                color: Colors.white,
+                onPressed: () {
+                  setState(() {
+                    widget.done = !widget.done;
+                  });
+                  },
               )
-            )
-          )),
+            ),
           Text(widget.title, style: const TextStyle(fontSize: 22))
         ]
-
     )
     );
   }
