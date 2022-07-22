@@ -55,8 +55,6 @@ class _ShoppingListState extends State<ShoppingList> {
     });
   }
 
-
-
   void _handleAddEntry() async {
 
     await _askForTitle(context);
@@ -76,7 +74,6 @@ class _ShoppingListState extends State<ShoppingList> {
     _buildTitle = "";
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,11 +85,15 @@ class _ShoppingListState extends State<ShoppingList> {
           children: _entries,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _handleAddEntry,
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.add),
+      floatingActionButton: Container(
+        width: 125,
+        height: 125,
+        child: FloatingActionButton(
+          onPressed: _handleAddEntry,
+          backgroundColor: Colors.blue,
+          child: const Icon(Icons.add, size: 75,),
       ),
+      )
     );
   }
 }
