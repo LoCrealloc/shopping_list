@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import "entry.dart";
 
+import "dialog.dart";
+
 class ShoppingList extends StatefulWidget {
   const ShoppingList({Key? key}) : super(key: key);
 
@@ -16,43 +18,12 @@ class ShoppingList extends StatefulWidget {
 class _ShoppingListState extends State<ShoppingList> {
   List<Entry> _entries = ShoppingList.loadEntries();
 
-  final TextEditingController _inputController = TextEditingController();
-
-  String _buildTitle = "";
-
-  Future<void> _askForTitle(BuildContext context) async {
-    return showDialog(context: context, builder: (context) {
-      return AlertDialog(
-        title: const Text("Neuer Eintrag"),
-        content: TextField(
-          decoration: const InputDecoration(hintText: "Titel"),
-          controller: _inputController,
-        ),
-        actions: <Widget>[
-          TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Abbrechen")
-          ),
-          TextButton(
-              onPressed: () {
-                  _buildTitle = _inputController.text;
-                  Navigator.pop(context);
-              },
-              child: const Text("OK")
-          )
-        ],
-      );
-    });
-  }
-
   void _handleAddEntry() async {
-    await _askForTitle(context);
+    String title = await askForTitle(context, "Neuer Eintrag");
 
-    if (_buildTitle.isNotEmpty) {
+    if (title.isNotEmpty) {
 
-      Entry newEntry = Entry(title: _buildTitle);
+      Entry newEntry = Entry(title: title);
       List<Entry> entriesCopy = [..._entries];
       entriesCopy.add(newEntry);
 
@@ -60,8 +31,6 @@ class _ShoppingListState extends State<ShoppingList> {
         _entries = entriesCopy;
       });
     }
-
-    _inputController.text = "";
   }
 
   @override

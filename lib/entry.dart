@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import "dialog.dart";
 
 class Entry extends StatefulWidget {
   Entry(
@@ -8,7 +9,7 @@ class Entry extends StatefulWidget {
       this.done = false,
     }) : super(key: key);
 
-  final String title;
+  String title;
   bool done;
 
   @override
@@ -16,6 +17,16 @@ class Entry extends StatefulWidget {
 }
 
 class _EntryState extends State<Entry> {
+
+  void _handleEdit() async {
+    String newTitle = await askForTitle(context, "Neuer Titel");
+
+    if (newTitle.isNotEmpty) {
+      setState(() {
+        widget.title = newTitle;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +59,13 @@ class _EntryState extends State<Entry> {
                   },
               )
             ),
-          Text(widget.title, style: const TextStyle(fontSize: 22))
+          Expanded(
+              child: Text(widget.title, style: const TextStyle(fontSize: 22))
+          ),
+          !widget.done ? IconButton(
+              onPressed: _handleEdit,
+              icon: const Icon(Icons.edit)
+          ) : const SizedBox.shrink()
         ]
     )
     );
