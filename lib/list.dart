@@ -11,8 +11,6 @@ class ShoppingList extends StatelessWidget {
 
   final List<Entry> entries = loadEntries();
 
-
-
   @override
   Widget build(BuildContext context) {
     return ListView(
