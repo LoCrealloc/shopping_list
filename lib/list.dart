@@ -16,35 +16,29 @@ class ShoppingList extends StatefulWidget {
 class _ShoppingListState extends State<ShoppingList> {
   List<Entry> _entries = ShoppingList.loadEntries();
 
+  final TextEditingController _inputController = TextEditingController();
+
   String _buildTitle = "";
-  bool _buildSuccess = false;
 
   Future<void> _askForTitle(BuildContext context) async {
     return showDialog(context: context, builder: (context) {
       return AlertDialog(
         title: const Text("Neuer Eintrag"),
         content: TextField(
-          onChanged: (value) {
-            setState(() {
-              _buildTitle = value;
-            });
-          },
           decoration: const InputDecoration(hintText: "Titel"),
+          controller: _inputController,
         ),
         actions: <Widget>[
           TextButton(
               onPressed: () {
-                _buildSuccess = false;
                 Navigator.pop(context);
               },
               child: const Text("Abbrechen")
           ),
           TextButton(
               onPressed: () {
-                setState(() {
-                  _buildSuccess = true;
+                  _buildTitle = _inputController.text;
                   Navigator.pop(context);
-                });
               },
               child: const Text("OK")
           )
@@ -56,7 +50,7 @@ class _ShoppingListState extends State<ShoppingList> {
   void _handleAddEntry() async {
     await _askForTitle(context);
 
-    if (_buildSuccess && _buildTitle.isNotEmpty) {
+    if (_buildTitle.isNotEmpty) {
 
       Entry newEntry = Entry(title: _buildTitle);
       List<Entry> entriesCopy = [..._entries];
@@ -67,8 +61,7 @@ class _ShoppingListState extends State<ShoppingList> {
       });
     }
 
-    _buildSuccess = false;
-    _buildTitle = "";
+    _inputController.text = "";
   }
 
   @override
