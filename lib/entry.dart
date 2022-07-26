@@ -50,7 +50,7 @@ class _EntryState extends State<Entry> {
             ),
             margin: const EdgeInsets.only(right: 20),
               child: IconButton(
-                icon: Icon(!widget.done ? Icons.check : Icons.restore),
+                icon: Icon(!widget.done ? Icons.shopping_cart_outlined : Icons.remove_shopping_cart_outlined),
                 color: Colors.white,
                 onPressed: () {
                   setState(() {
