@@ -18,18 +18,32 @@ class ShoppingList extends StatefulWidget {
 class _ShoppingListState extends State<ShoppingList> {
   List<Entry> _entries = ShoppingList.loadEntries();
 
+  void sortEntriesByState() {
+    List<Entry> entriesCopy = [..._entries];
+
+    entriesCopy.sort((a, b) {
+      if (a.done && b.done) {
+        return a.title.length > b.title.length ? 1 : -1;
+      }
+      return a.done ? 1 : -1;
+    });
+    setState(() {
+      _entries = entriesCopy;
+    });
+  }
+
   void _handleAddEntry() async {
     String title = await askForTitle(context, "Neuer Eintrag");
 
     if (title.isNotEmpty) {
 
-      Entry newEntry = Entry(title: title);
+      Entry newEntry = Entry(title: title, sortTrigger: sortEntriesByState);
       List<Entry> entriesCopy = [..._entries];
       entriesCopy.add(newEntry);
 
-      setState(() {
-        _entries = entriesCopy;
-      });
+      _entries = entriesCopy;
+
+      sortEntriesByState();
     }
   }
 

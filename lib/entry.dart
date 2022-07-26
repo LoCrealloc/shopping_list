@@ -6,11 +6,14 @@ class Entry extends StatefulWidget {
     {
       Key? key,
       required this.title,
+      required this.sortTrigger,
       this.done = false,
     }) : super(key: key);
 
   String title;
   bool done;
+
+  VoidCallback sortTrigger;
 
   @override
   State<Entry> createState() => _EntryState();
@@ -56,6 +59,7 @@ class _EntryState extends State<Entry> {
                   setState(() {
                     widget.done = !widget.done;
                   });
+                  widget.sortTrigger();
                   },
               )
             ),
