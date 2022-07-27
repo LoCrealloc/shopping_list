@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import "entry.dart";
 
+import "dialog.dart";
+
 class ShoppingList extends StatefulWidget {
   const ShoppingList({Key? key}) : super(key: key);
 
@@ -16,52 +18,33 @@ class ShoppingList extends StatefulWidget {
 class _ShoppingListState extends State<ShoppingList> {
   List<Entry> _entries = ShoppingList.loadEntries();
 
-  final TextEditingController _inputController = TextEditingController();
+  void sortEntriesByState() {
+    List<Entry> entriesCopy = [..._entries];
 
-  String _buildTitle = "";
-
-  Future<void> _askForTitle(BuildContext context) async {
-    return showDialog(context: context, builder: (context) {
-      return AlertDialog(
-        title: const Text("Neuer Eintrag"),
-        content: TextField(
-          decoration: const InputDecoration(hintText: "Titel"),
-          controller: _inputController,
-        ),
-        actions: <Widget>[
-          TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Abbrechen")
-          ),
-          TextButton(
-              onPressed: () {
-                  _buildTitle = _inputController.text;
-                  Navigator.pop(context);
-              },
-              child: const Text("OK")
-          )
-        ],
-      );
+    entriesCopy.sort((a, b) {
+      if (a.done && b.done) {
+        return a.title.length > b.title.length ? 1 : -1;
+      }
+      return a.done ? 1 : -1;
+    });
+    setState(() {
+      _entries = entriesCopy;
     });
   }
 
   void _handleAddEntry() async {
-    await _askForTitle(context);
+    String title = await askForTitle(context, "Neuer Eintrag");
 
-    if (_buildTitle.isNotEmpty) {
+    if (title.isNotEmpty) {
 
-      Entry newEntry = Entry(title: _buildTitle);
+      Entry newEntry = Entry(title: title, sortTrigger: sortEntriesByState);
       List<Entry> entriesCopy = [..._entries];
       entriesCopy.add(newEntry);
 
-      setState(() {
-        _entries = entriesCopy;
-      });
-    }
+      _entries = entriesCopy;
 
-    _inputController.text = "";
+      sortEntriesByState();
+    }
   }
 
   @override

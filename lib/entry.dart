@@ -1,21 +1,35 @@
 import 'package:flutter/material.dart';
+import "dialog.dart";
 
 class Entry extends StatefulWidget {
   Entry(
     {
       Key? key,
       required this.title,
+      required this.sortTrigger,
       this.done = false,
     }) : super(key: key);
 
-  final String title;
+  String title;
   bool done;
+
+  VoidCallback sortTrigger;
 
   @override
   State<Entry> createState() => _EntryState();
 }
 
 class _EntryState extends State<Entry> {
+
+  void _handleEdit() async {
+    String newTitle = await askForTitle(context, "Neuer Titel");
+
+    if (newTitle.isNotEmpty) {
+      setState(() {
+        widget.title = newTitle;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +59,17 @@ class _EntryState extends State<Entry> {
                   setState(() {
                     widget.done = !widget.done;
                   });
+                  widget.sortTrigger();
                   },
               )
             ),
-          Text(widget.title, style: const TextStyle(fontSize: 22))
+          Expanded(
+              child: Text(widget.title, style: const TextStyle(fontSize: 22))
+          ),
+          !widget.done ? IconButton(
+              onPressed: _handleEdit,
+              icon: const Icon(Icons.edit)
+          ) : const SizedBox.shrink()
         ]
     )
     );
