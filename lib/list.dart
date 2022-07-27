@@ -4,7 +4,9 @@ import "entry.dart";
 import "dialog.dart";
 
 class ShoppingList extends StatefulWidget {
-  const ShoppingList({Key? key}) : super(key: key);
+  const ShoppingList({Key? key, required this.title}) : super(key: key);
+
+  final String title;
 
   static List<Entry> loadEntries() {
     // TODO actually load entries
@@ -51,7 +53,7 @@ class _ShoppingListState extends State<ShoppingList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text("Einkaufsliste")
+          title: Text(widget.title)
       ),
       body: Center(
         child: ListView(
@@ -59,12 +61,12 @@ class _ShoppingListState extends State<ShoppingList> {
         ),
       ),
       floatingActionButton: SizedBox(
-        width: 125,
-        height: 125,
+        width: 60,
+        height: 60,
         child: FloatingActionButton(
           onPressed: _handleAddEntry,
           backgroundColor: Colors.blue,
-          child: const Icon(Icons.add, size: 75,),
+          child: const Icon(Icons.add, size: 30,),
       ),
       )
     );

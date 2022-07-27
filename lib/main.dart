@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping/list.dart';
+import 'package:shopping/metalist.dart';
 
 
 void main() {
@@ -16,7 +16,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ShoppingList()
+      home: Overview()
     );
   }
 }
