@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:shopping/list.dart';
 
+import 'package:shopping/dialog.dart';
+
 class Overview extends StatefulWidget {
   const Overview({Key? key}) : super(key: key);
 
@@ -17,7 +19,22 @@ class _OverviewState extends State<Overview> {
     return [const ListContainer(list: ShoppingList(title: "Title"))];
   }
 
-  final List<ListContainer> _lists = getLists();
+  void _createNewList() async {
+    String title = await askForTitle(context, "Neue Liste");
+
+    if (title.isNotEmpty) {
+
+      ListContainer newList = ListContainer(list: ShoppingList(title: title));
+      List<ListContainer> listsCopy = [..._lists];
+      listsCopy.add(newList);
+
+      setState(() {
+        _lists = listsCopy;
+      });
+    }
+  }
+
+  List<ListContainer> _lists = getLists();
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +48,12 @@ class _OverviewState extends State<Overview> {
           ),
         ),
         floatingActionButton: SizedBox(
-          width: 125,
-          height: 125,
+          width: 60,
+          height: 60,
           child: FloatingActionButton(
-            onPressed: (){},
+            onPressed: _createNewList,
             backgroundColor: Colors.blue,
-            child: const Icon(Icons.add, size: 75,),
+            child: const Icon(Icons.add, size: 30,),
           ),
         )
     );
