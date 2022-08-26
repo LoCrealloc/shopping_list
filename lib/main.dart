@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:shopping/list.dart';
+import 'package:shopping/db.dart';
+import 'package:shopping/metalist.dart';
+import 'package:sqflite/sqflite.dart';
 
 
-void main() {
-  runApp(const App());
+void main() async {
+  Database db = await DBHandler.connectToDB();
+  runApp(App(db: db));
 }
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  const App({Key? key, required this.db}) : super(key: key);
+
+  final Database db;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ShoppingList()
+      home: Overview(db: db)
     );
   }
 }
