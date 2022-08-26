@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import "dialog.dart";
 
+import "package:sqflite/sqflite.dart";
+import "package:shopping/db.dart";
+
 class Entry extends StatefulWidget {
   Entry(
     {
       Key? key,
       required this.title,
       required this.sortTrigger,
+      required this.id,
+      required this.db,
       this.done = false,
     }) : super(key: key);
 
   String title;
   bool done;
+  int id;
+  Database db;
 
   VoidCallback sortTrigger;
 
@@ -25,6 +32,8 @@ class _EntryState extends State<Entry> {
     String newTitle = await askForTitle(context, "Neuer Titel");
 
     if (newTitle.isNotEmpty) {
+      await DBHandler.updateEntryTitle(widget.db, widget.id, newTitle);
+
       setState(() {
         widget.title = newTitle;
       });
@@ -55,10 +64,11 @@ class _EntryState extends State<Entry> {
               child: IconButton(
                 icon: Icon(!widget.done ? Icons.shopping_cart_outlined : Icons.remove_shopping_cart_outlined),
                 color: Colors.white,
-                onPressed: () {
+                onPressed: () async {
                   setState(() {
                     widget.done = !widget.done;
                   });
+                  await DBHandler.updateEntryDone(widget.db, widget.id, widget.done);
                   widget.sortTrigger();
                   },
               )

@@ -1,23 +1,78 @@
 import 'package:flutter/material.dart';
-
 import 'package:shopping/list.dart';
+import 'package:shopping/dialog.dart';
+import "package:shopping/db.dart";
+import 'package:shopping/models.dart';
+import 'package:sqflite/sqflite.dart';
 
 class Overview extends StatefulWidget {
-  const Overview({Key? key}) : super(key: key);
+  Overview({Key? key, required this.db}) : super(key: key);
 
-
+  final Database db;
+  List<ListContainer> lists = [];
+    
   @override
   State<Overview> createState() => _OverviewState();
 }
 
 class _OverviewState extends State<Overview> {
 
-  static List<ListContainer> getLists() {
-    // TODO actually load lists
-    return [const ListContainer(list: ShoppingList(title: "Title"))];
+  @override
+  void initState() {
+    super.initState();
+
+    getLists().then((value) {
+      setState(() {
+        widget.lists = value;
+      });
+    });
   }
 
-  final List<ListContainer> _lists = getLists();
+  @override
+  void didUpdateWidget(_) {
+    super.didUpdateWidget(_);
+
+    getLists().then((value) {
+      setState(() {
+        widget.lists = value;
+      });
+    });
+  }
+
+  Future<List<ListContainer>> getLists() async {
+    List<Metalist> lists = await DBHandler.getLists(widget.db);
+
+    List<ListContainer> out = [];
+
+    for (int i = 0; i < lists.length; i++) {
+      Metalist current = lists[i];
+      ListContainer c = ListContainer(
+          list: ShoppingList(title: current.title, db: widget.db, listId: current.id)
+      );
+
+      out.add(c);
+    }
+
+    return out;
+  }
+
+
+  void _createNewList() async {
+    String title = await askForTitle(context, "Neue Liste");
+
+    if (title.isNotEmpty) {
+      
+      int id = await DBHandler.addList(widget.db, title);
+
+      ListContainer newList = ListContainer(list: ShoppingList(title: title, listId: id, db: widget.db));
+      List<ListContainer> listsCopy = [...widget.lists];
+      listsCopy.add(newList);
+
+      setState(() {
+        widget.lists = listsCopy;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +82,16 @@ class _OverviewState extends State<Overview> {
         ),
         body: Center(
           child: ListView(
-            children: _lists,
+            children: widget.lists,
           ),
         ),
         floatingActionButton: SizedBox(
-          width: 125,
-          height: 125,
+          width: 60,
+          height: 60,
           child: FloatingActionButton(
-            onPressed: (){},
+            onPressed: _createNewList,
             backgroundColor: Colors.blue,
-            child: const Icon(Icons.add, size: 75,),
+            child: const Icon(Icons.add, size: 30,),
           ),
         )
     );
